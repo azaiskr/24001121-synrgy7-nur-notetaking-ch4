@@ -11,8 +11,9 @@ import kotlinx.coroutines.launch
 
 class NoteViewModel (private val noteRepository: NoteRepository):ViewModel() {
 
-    fun getAllNotes() = noteRepository.getAllNotes()
-    fun insertNote(note: Note) = noteRepository.insertNote(note)
+    fun getAllNotes(): LiveData<List<Note>> = noteRepository.getAllNotes()
+
+    fun insertNote(note: Note) = noteRepository.insertNote(note).asLiveData()
     fun updateNote(note: Note) = noteRepository.updateNote(note)
     fun deleteNote(note: Note) = noteRepository.deleteNote(note)
 

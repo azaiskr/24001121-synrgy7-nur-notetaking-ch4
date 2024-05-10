@@ -16,6 +16,7 @@
 
     <style name="appBarCustomTitle" parent="@style/TextAppearance.Material3.ActionBar.Title">
         <item name="android:textColor">@color/white</item>
+        <item name="fontFamily">@font/poppins_semibold</item>
     </style>
 
     <style name="Theme.NoteTaking" parent="Base.Theme.NoteTaking" />

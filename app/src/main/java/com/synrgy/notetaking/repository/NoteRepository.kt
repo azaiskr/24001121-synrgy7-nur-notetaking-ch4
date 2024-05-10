@@ -12,6 +12,7 @@ import com.synrgy.notetaking.data.database.UserDao
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -48,7 +49,14 @@ class NoteRepository(
 
     //Note
     fun getAllNotes(): LiveData<List<Note>> = mNoteDao.getAllNotes()
-    fun insertNote(note: Note) = executeInBackground { mNoteDao.insert(note) }
+    fun insertNote(note: Note) = flow{
+        try {
+            val result = mNoteDao.insert(note)
+            emit(State.Success(result))
+        } catch (e: Exception){
+            emit(State.Error(e.message))
+        }
+    }
     fun updateNote(note: Note) = executeInBackground { mNoteDao.update(note) }
     fun deleteNote(note: Note) = executeInBackground { mNoteDao.delete(note) }
 
