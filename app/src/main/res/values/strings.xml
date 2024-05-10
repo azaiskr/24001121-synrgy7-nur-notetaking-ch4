@@ -14,4 +14,5 @@
     <string name="empty_notes">empty notes</string>
     <string name="empty_list">Empty list!</string>
     <string name="no_notes_desc">You have no notes at this moment.</string>
+    <string name="log_out">Log Out</string>
 </resources>

@@ -1,7 +1,20 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.NoteTaking" parent="Theme.Material3.DayNight.NoActionBar">
+    <style name="Base.Theme.NoteTaking" parent="Theme.Material3.DayNight">
         <!-- Customize your dark theme here. -->
-        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+        <item name="colorPrimary">@color/dark_blue_pastel</item>
+        <item name="actionBarStyle">@style/customActionBar</item>
+        <item name="android:statusBarColor">@color/dark_blue_pastel</item>    </style>
+
+    <style name="customActionBar" parent="@style/Widget.MaterialComponents.ActionBar.Primary">
+        <item name="background">@color/dark_blue_pastel</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="iconTint">@color/white</item>
+        <item name="titleTextStyle">@style/appBarCustomTitle</item>
+    </style>
+
+    <style name="appBarCustomTitle" parent="@style/TextAppearance.Material3.ActionBar.Title">
+        <item name="android:textColor">@color/white</item>
+        <item name="fontFamily">@font/poppins_semibold</item>
     </style>
 </resources>

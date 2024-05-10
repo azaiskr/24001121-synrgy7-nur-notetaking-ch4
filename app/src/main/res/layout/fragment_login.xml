@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:paddingHorizontal="24dp"
     android:paddingVertical="48dp"
-    tools:context=".LoginFragment">
+    tools:context=".layout.LoginFragment">
 
     <TextView
         android:id="@+id/tvLogin"

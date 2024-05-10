@@ -1,4 +1,4 @@
-package com.synrgy.notetaking
+package com.synrgy.notetaking.layout
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

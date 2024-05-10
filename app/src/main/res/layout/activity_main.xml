@@ -7,85 +7,72 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <TextView
+        android:id="@+id/tvNoteList"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/poppins_bold"
+        android:text="@string/note_list"
+        android:textColor="@color/dark_blue_pastel"
+        android:textSize="24sp" />
+
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clEmptyList"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <TextView
-            android:id="@+id/tvNoteList"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="@string/note_list"
-            android:textSize="24sp"
-            android:textColor="@color/dark_blue_pastel"
-            android:fontFamily="@font/poppins_semibold"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
-
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        tools:visibility="visible">
         <ImageView
             android:id="@+id/ivEmptyList"
             android:layout_width="wrap_content"
             android:layout_height="240dp"
             android:contentDescription="@string/empty_notes"
-            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvNoteList"
-            app:layout_constraintVertical_bias="0.3"
-            tools:src="@drawable/empty_list"
-            tools:visibility="visible" />
-
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.4"
+            tools:src="@drawable/empty_list" />
         <TextView
             android:id="@+id/tvEmptyList"
-            android:visibility="gone"
-            tools:visibility="visible"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_semibold"
             android:text="@string/empty_list"
-            android:fontFamily="@font/poppins_bold"
             android:textColor="@color/blue"
             android:textSize="24sp"
-            app:layout_constraintTop_toBottomOf="@id/ivEmptyList"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintTop_toBottomOf="@id/ivEmptyList" />
         <TextView
-            android:visibility="gone"
-            tools:visibility="visible"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/no_notes_desc"
             android:fontFamily="@font/poppins_light"
+            android:text="@string/no_notes_desc"
             android:textColor="@color/blue"
-            app:layout_constraintTop_toBottomOf="@id/tvEmptyList"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
-
-
-
+            app:layout_constraintTop_toBottomOf="@id/tvEmptyList" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:layout_marginTop="64dp"
         android:id="@+id/rvNotes"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:layout_marginTop="64dp"
+        tools:listitem="@layout/note_item"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/create"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:id="@+id/create"
         android:layout_margin="16dp"
-        android:backgroundTint="@color/light_orange_pastel"
+        android:backgroundTint="@color/blue"
         android:contentDescription="@string/action_create"
         app:srcCompat="@drawable/round_add"
-        app:tint="@color/white_blue"/>
-
-
-
+        app:tint="@color/white" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
