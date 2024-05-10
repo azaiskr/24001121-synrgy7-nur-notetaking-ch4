@@ -1,6 +1,8 @@
 package com.synrgy.notetaking.repository
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.liveData
+import com.synrgy.notetaking.State
 import com.synrgy.notetaking.data.LoginPreferences
 import com.synrgy.notetaking.data.database.Note
 import com.synrgy.notetaking.data.database.NoteDao
@@ -21,9 +23,21 @@ class NoteRepository(
     private val mUserDao: UserDao = appDatabase.userDao()
 
     //User
-    fun register(user: User) = executeInBackground { mUserDao.insert(user) }
-    suspend fun login(email: String, password: String): User = withContext(Dispatchers.IO) {
-        mUserDao.getUser(email, password)
+    fun register(user: User) = liveData {
+        try {
+            val response = mUserDao.insert(user)
+            emit(State.Success(response))
+        } catch (e: Exception){
+            emit(State.Error(e.message))
+        }
+    }
+    fun login(email: String, password: String): LiveData<State<User>> = liveData {
+        try {
+            val response = mUserDao.getUser(email, password)
+            emit(State.Success(response))
+        } catch (e: Exception) {
+            emit(State.Error(e.message))
+        }
     }
 
     suspend fun logout() = loginPreferences.clearLoginPref()

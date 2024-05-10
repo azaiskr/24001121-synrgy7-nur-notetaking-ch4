@@ -26,9 +26,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        supportActionBar?.apply {
-            title = "Hi, !"
-        }
+
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -48,6 +46,10 @@ class MainActivity : AppCompatActivity() {
             if ((user.username == "") && (user.password == "")) {
                 startActivity(Intent(this, WelcomeActivity::class.java))
                 finish()
+            } else{
+                supportActionBar?.apply {
+                    title = "Hi, ${user.username}!"
+                }
             }
         }
     }
