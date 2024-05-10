@@ -22,8 +22,8 @@ class NoteRepository(
 
     //User
     fun register(user: User) = executeInBackground { mUserDao.insert(user) }
-    suspend fun login(username: String, password: String): User = withContext(Dispatchers.IO) {
-        mUserDao.getUser(username, password)
+    suspend fun login(email: String, password: String): User = withContext(Dispatchers.IO) {
+        mUserDao.getUser(email, password)
     }
 
     suspend fun logout() = loginPreferences.clearLoginPref()

@@ -10,7 +10,7 @@ interface UserDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insert(user: User)
 
-    @Query("Select * from user where username = :username and password = :password")
-    fun getUser(username: String, password: String): User
+    @Query("Select * from user where email = :email and password = :password")
+    fun getUser(email: String, password: String): User
 
 }

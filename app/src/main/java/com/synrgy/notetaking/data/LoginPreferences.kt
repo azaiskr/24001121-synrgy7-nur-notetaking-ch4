@@ -24,6 +24,7 @@ class LoginPreferences private constructor(private val dataStore: DataStore<Pref
     fun getLoginPref(): Flow<User> {
         return dataStore.data.map { preferences ->
             User(
+                preferences[EMAIL_KEY] ?: "",
                 preferences[USERNAME_KEY] ?: "",
                 preferences[PASSWORD_KEY] ?: ""
             )
@@ -40,6 +41,7 @@ class LoginPreferences private constructor(private val dataStore: DataStore<Pref
         @Volatile
         private var INSTANCE: LoginPreferences? = null
 
+        private val EMAIL_KEY = stringPreferencesKey("email")
         private val USERNAME_KEY = stringPreferencesKey("username")
         private val PASSWORD_KEY = stringPreferencesKey("password")
 
