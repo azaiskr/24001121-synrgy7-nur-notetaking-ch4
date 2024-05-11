@@ -14,7 +14,7 @@ class NoteViewModel (private val noteRepository: NoteRepository):ViewModel() {
     fun getAllNotes(): LiveData<List<Note>> = noteRepository.getAllNotes()
 
     fun insertNote(note: Note) = noteRepository.insertNote(note).asLiveData()
-    fun updateNote(note: Note) = noteRepository.updateNote(note)
+    fun updateNote(note: Note) = noteRepository.updateNote(note).asLiveData()
     fun deleteNote(note: Note) = noteRepository.deleteNote(note)
 
     fun checkSession(): LiveData<User>{

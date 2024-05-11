@@ -8,13 +8,25 @@ import androidx.recyclerview.widget.RecyclerView
 import com.synrgy.notetaking.data.database.Note
 import com.synrgy.notetaking.databinding.NoteItemBinding
 
-class ListAdapter : ListAdapter<Note, com.synrgy.notetaking.ListAdapter.ViewHolder>(DIFF_CALLBACK) {
+class ListAdapter (private val listener: OnNoteItemClickListener): ListAdapter<Note, com.synrgy.notetaking.ListAdapter.ViewHolder>(DIFF_CALLBACK) {
+
+    interface OnNoteItemClickListener{
+        fun onEditClick(note: Note)
+        fun onDeleteClick(note: Note)
+    }
 
     class ViewHolder(private val binding : NoteItemBinding) :
     RecyclerView.ViewHolder(binding.root) {
-        fun bind(note: Note) {
+        fun bind(note: Note, listener: OnNoteItemClickListener) {
             binding.tvNoteTitle.text = note.title
             binding.tvNoteContent.text = note.content
+            binding.btnDelete.setOnClickListener {
+                listener.onDeleteClick(note)
+            }
+
+            binding.btnEdit.setOnClickListener {
+                listener.onEditClick(note)
+            }
         }
 
     }
@@ -26,8 +38,8 @@ class ListAdapter : ListAdapter<Note, com.synrgy.notetaking.ListAdapter.ViewHold
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val note = getItem(position)
-        if (note != null) {
-            holder.bind(note)
+        note?.let {
+            holder.bind(note, listener)
         }
     }
 

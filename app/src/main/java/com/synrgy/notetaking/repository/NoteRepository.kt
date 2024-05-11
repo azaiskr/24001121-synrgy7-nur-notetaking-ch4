@@ -4,9 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
 import com.synrgy.notetaking.State
 import com.synrgy.notetaking.data.LoginPreferences
+import com.synrgy.notetaking.data.database.AppDatabase
 import com.synrgy.notetaking.data.database.Note
 import com.synrgy.notetaking.data.database.NoteDao
-import com.synrgy.notetaking.data.database.AppDatabase
 import com.synrgy.notetaking.data.database.User
 import com.synrgy.notetaking.data.database.UserDao
 import kotlinx.coroutines.CoroutineScope
@@ -14,7 +14,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class NoteRepository(
     private val loginPreferences: LoginPreferences,
@@ -28,10 +27,11 @@ class NoteRepository(
         try {
             val response = mUserDao.insert(user)
             emit(State.Success(response))
-        } catch (e: Exception){
+        } catch (e: Exception) {
             emit(State.Error(e.message))
         }
     }
+
     fun login(email: String, password: String): LiveData<State<User>> = liveData {
         try {
             val response = mUserDao.getUser(email, password)
@@ -49,15 +49,24 @@ class NoteRepository(
 
     //Note
     fun getAllNotes(): LiveData<List<Note>> = mNoteDao.getAllNotes()
-    fun insertNote(note: Note) = flow{
+    fun insertNote(note: Note) = flow {
         try {
             val result = mNoteDao.insert(note)
+            emit(State.Success(result))
+        } catch (e: Exception) {
+            emit(State.Error(e.message))
+        }
+    }
+
+    fun updateNote(note: Note) = flow {
+        try {
+            val result = mNoteDao.update(note)
             emit(State.Success(result))
         } catch (e: Exception){
             emit(State.Error(e.message))
         }
     }
-    fun updateNote(note: Note) = executeInBackground { mNoteDao.update(note) }
+
     fun deleteNote(note: Note) = executeInBackground { mNoteDao.delete(note) }
 
 

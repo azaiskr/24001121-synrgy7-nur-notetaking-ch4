@@ -32,7 +32,7 @@
                 android:maxLines="1"
                 android:textSize="20sp"
                 android:textColor="@color/black"
-                android:fontFamily="@font/poppins_semibold"
+                android:fontFamily="@font/poppins_medium"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
@@ -41,10 +41,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 tools:text="This is the description of the note."
-                android:textSize="14sp"
-                android:ellipsize="end"
+                android:textSize="12sp"
                 android:textColor="@color/black"
-                android:fontFamily="@font/poppins"
+                android:fontFamily="@font/poppins_light"
                 app:layout_constraintTop_toBottomOf="@id/tvNoteTitle"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
@@ -57,18 +56,16 @@
             android:gravity="center|end">
             <Button
                 android:id="@+id/btnEdit"
-                style="@style/Widget.Material3.Button.IconButton.Filled"
+                style="@style/Widget.Material3.Button.IconButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:icon="@drawable/round_edit"
-                android:backgroundTint="@color/light_orange_pastel"/>
+                app:icon="@drawable/round_edit"/>
             <Button
                 android:id="@+id/btnDelete"
-                style="@style/Widget.Material3.Button.IconButton.Filled"
+                style="@style/Widget.Material3.Button.IconButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:icon="@drawable/round_delete"
-                android:backgroundTint="@color/red_pastel"/>
+                app:icon="@drawable/round_delete"/>
         </LinearLayout>
 
     </LinearLayout>

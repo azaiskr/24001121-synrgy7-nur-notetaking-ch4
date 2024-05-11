@@ -3,6 +3,7 @@ package com.synrgy.notetaking
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -11,14 +12,13 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.synrgy.notetaking.data.database.Note
 import com.synrgy.notetaking.databinding.ActivityMainBinding
 import com.synrgy.notetaking.databinding.CustomDialogViewBinding
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), ListAdapter.OnNoteItemClickListener {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var adapter: ListAdapter
@@ -28,8 +28,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -63,9 +61,12 @@ class MainActivity : AppCompatActivity() {
     private fun actionAddNote() {
         val dialogBinding: CustomDialogViewBinding = CustomDialogViewBinding.inflate(layoutInflater)
         dialogBinding.dialogTitle.text = getString(R.string.insert)
+        dialogBinding.dialogMessage.visibility = View.GONE
         val dialogView = dialogBinding.root
         val dialogBuilder = MaterialAlertDialogBuilder(this)
-        dialogBuilder.setView(dialogView).show()
+        dialogBuilder.setView(dialogView)
+        val dialog = dialogBuilder.show()
+
         dialogBinding.btnInsert.apply {
             text = getString(R.string.insert)
             setOnClickListener {
@@ -81,8 +82,8 @@ class MainActivity : AppCompatActivity() {
                                     "Note Inserted",
                                     Toast.LENGTH_SHORT
                                 ).show()
+                                dialog.dismiss()
                             }
-
                             is State.Error -> Toast.makeText(
                                 this@MainActivity,
                                 it.error,
@@ -100,14 +101,15 @@ class MainActivity : AppCompatActivity() {
             layoutManager = LinearLayoutManager(this@MainActivity)
             setHasFixedSize(true)
         }
-        //TODO: load note acsess view models
-        adapter = ListAdapter()
+        adapter = ListAdapter(this)
         binding.rvNotes.adapter = adapter
-        viewModel.getAllNotes().observe(this@MainActivity){notes ->
-            if (notes.isEmpty()){
+        viewModel.getAllNotes().observe(this@MainActivity) { notes ->
+            if (notes.isEmpty()) {
                 binding.tvNoteList.visibility = View.GONE
+                binding.rvNotes.visibility = View.GONE
                 binding.clEmptyList.visibility = View.VISIBLE
             } else {
+                binding.rvNotes.visibility = View.VISIBLE
                 binding.tvNoteList.visibility = View.VISIBLE
                 binding.clEmptyList.visibility = View.GONE
                 adapter.submitList(notes)
@@ -127,5 +129,69 @@ class MainActivity : AppCompatActivity() {
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    override fun onEditClick(note: Note) {
+        val dialogBinding: CustomDialogViewBinding = CustomDialogViewBinding.inflate(layoutInflater)
+        dialogBinding.apply {
+            dialogTitle.text = getString(R.string.update_note)
+            dialogMessage.visibility = View.GONE
+            etNoteTitle.setText(note.title)
+            etNoteContent.setText(note.content)
+        }
+        val dialogView = dialogBinding.root
+        val dialogBuilder = MaterialAlertDialogBuilder(this)
+        dialogBuilder.setView(dialogView)
+        val dialog = dialogBuilder.show()
+
+        dialogBinding.btnInsert.apply {
+            text = getString(R.string.update_note)
+            setOnClickListener {
+                val noteTitle = dialogBinding.etNoteTitle.text.toString()
+                val noteContent = dialogBinding.etNoteContent.text.toString()
+                viewModel.updateNote(Note(id = note.id, title = noteTitle, content = noteContent))
+                    .observe(this@MainActivity) {
+                        when (it) {
+                            is State.Success -> {
+                                Toast.makeText(
+                                    this@MainActivity,
+                                    "Note Updated",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                                dialog.dismiss()
+                            }
+                            is State.Error -> Toast.makeText(
+                                this@MainActivity,
+                                it.error,
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    }
+            }
+        }
+
+    }
+
+    override fun onDeleteClick(note: Note) {
+        val dialogBinding: CustomDialogViewBinding = CustomDialogViewBinding.inflate(layoutInflater)
+        dialogBinding.dialogTitle.text = getString(R.string.delete_note)
+        dialogBinding.dialogMessage.text = getString(R.string.dialog_delete_mssg)
+        dialogBinding.btnInsert.visibility =View.GONE
+        dialogBinding.noteContent.visibility = View.GONE
+        dialogBinding.noteTitle.visibility = View.GONE
+        val dialogView = dialogBinding.root
+
+        val dialogBuilder = MaterialAlertDialogBuilder(this)
+        dialogBuilder.apply {
+            setView(dialogView)
+            setPositiveButton("Delete") { dialog, _ ->
+                viewModel.deleteNote(note)
+                dialog.dismiss()
+            }
+            setNegativeButton("Cancel") { dialog, _ ->
+                dialog.dismiss()
+            }
+            show()
+        }
     }
 }
